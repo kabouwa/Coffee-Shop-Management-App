@@ -21,7 +21,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('dashboard', DashboardController::class);
         Route::get('orders/statuses', [OrderController::class, 'statuses']);
-        Route::get('product-categories', [ProductController::class, 'categories']);
+        Route::get('products/categories', [ProductController::class, 'categories']);
         Route::apiResource('products', ProductController::class);
         Route::apiResource('orders', OrderController::class);
     });
