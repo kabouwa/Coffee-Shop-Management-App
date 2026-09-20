@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('m F Y'),
             'shop' => ShopResource::make($this->whenLoaded('shop')),
         ];
     }

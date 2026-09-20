@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Requests\Auth\UpdateProfileRequest;
+use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -41,7 +41,7 @@ class AuthController extends Controller
         $token = $user->createToken('web')->plainTextToken;
 
         return response()->json([
-            'user' => new UserResource($user),
+            'user' => new UserResource($user->load('shop')),
             'token' => $token,
         ], 201);
     }
@@ -61,7 +61,7 @@ class AuthController extends Controller
         $token = $user->createToken('web')->plainTextToken;
 
         return response()->json([
-            'user' => new UserResource($user),
+            'user' => new UserResource($user->load('shop')),
             'token' => $token,
         ]);
     }
@@ -80,15 +80,21 @@ class AuthController extends Controller
         return new UserResource($request->user()->load('shop'));
     }
 
-    public function updateProfile(UpdateProfileRequest $request): UserResource
+    public function update(UpdateUserRequest $request): UserResource
     {
         $validated = $request->validated();
         $user = $request->user();
 
-        $user->update([
+        $new_user_data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
-        ]);
+        ];
+
+        if (!empty($validated['password'])) {
+            $new_user_data['password'] = Hash::make($validated['password']);
+        }
+
+        $user->update($new_user_data);
 
         $user->shop()->updateOrCreate([], [
             'shop_name' => $validated['shop_name'],
@@ -98,6 +104,6 @@ class AuthController extends Controller
             'country' => $validated['country'],
         ]);
 
-        return new UserResource($request->user()->refresh());
+        return new UserResource($request->user()->refresh()->load('shop'));
     }
 }
