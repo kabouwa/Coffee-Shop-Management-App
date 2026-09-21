@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
+use Str;
 
 #[Fillable(['user_id', 'name', 'description', 'price', 'category', 'image', 'available'])]
 class Product extends Model
@@ -70,5 +71,24 @@ class Product extends Model
             ->ownedBy(request()->user())
             ->where($field, $value)
             ->firstOrFail();
+    }
+
+    public function getRouteKey(): string
+    {
+        return 'slug';
+    }
+
+    public static function booted(): void
+    {
+        static::creating(function (Product $product) {
+            $product->slug = Str::slug($product->name);
+        });
+
+        static::updating(function (Product $product) {
+            if ($product->isDirty('name')) {
+                $product->slug = Str::slug($product->name);
+            }
+        });
+
     }
 }
