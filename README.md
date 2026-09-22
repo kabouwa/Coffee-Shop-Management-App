@@ -6,6 +6,8 @@ A management app for a coffee shop — full-stack project with a separate backen
 
 This is a **vibe-coded** project — built fast and loosely rather than heavily planned out. Structure and features are still taking shape.
 
+📄 [Cahier de charge](https://github.com/kabouwa/Coffee-Shop-Management-App/blob/main/backend/README.md) — full project spec (SaaS multi-tenant coffee shop management app)
+
 ## Stack
 
 **Backend** (`backend/`)
