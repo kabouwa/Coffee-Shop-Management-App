@@ -73,7 +73,7 @@ class Product extends Model
             ->firstOrFail();
     }
 
-    public function getRouteKey(): string
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
