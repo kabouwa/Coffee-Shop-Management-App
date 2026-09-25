@@ -43,7 +43,7 @@ class DashboardService
             ->limit(5)
             ->get()
             ->map(fn (OrderItem $item) => [
-                'product_id' => $item->product_id,
+                'slug' => $item->product?->slug,
                 'name' => $item->product?->name ?? 'Deleted product',
                 'quantity_sold' => (int) $item->quantity_sold,
                 'revenue' => (float) $item->revenue,
@@ -65,7 +65,7 @@ class DashboardService
             'completed_orders' => $completedCount,
             'average_basket' => $completedCount > 0 ? round($totalRevenue / $completedCount, 2) : 0,
             'best_selling_product' => $bestSeller ? [
-                'product_id' => $bestSeller->product_id,
+                'slug' => $bestSeller->product->slug,
                 'name' => $bestSeller->product?->name ?? 'Deleted product',
                 'quantity_sold' => (int) $bestSeller->quantity_sold,
             ] : null,
