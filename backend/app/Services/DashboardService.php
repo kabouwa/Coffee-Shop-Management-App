@@ -107,8 +107,11 @@ class DashboardService
             ['mysql', 'week'] => "DATE_FORMAT(created_at, '%x-W%v')",
             ['mysql', 'month'] => "DATE_FORMAT(created_at, '%Y-%m')",
             ['mysql', 'day'] => 'DATE(created_at)',
-            [_, 'week'] => "strftime('%Y-W%W', created_at)",
-            [_, 'month'] => "strftime('%Y-%m', created_at)",
+
+            ['sqlite', 'week'] => "strftime('%Y-W%W', created_at)",
+            ['sqlite', 'month'] => "strftime('%Y-%m', created_at)",
+            ['sqlite', 'day'] => 'date(created_at)',
+
             default => 'date(created_at)',
         };
 
